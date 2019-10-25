@@ -17,50 +17,50 @@ library (lattice)
 library(reshape)
 
 
-data <- read.csv("MSHM.csv",header = T, row.names = 1)
-otu <- read.csv(file="OTU.csv",header = T, row.names = 1)
-str(data)
-str(otu)
-summary(otu)
-summary(data)
-colSums(otu)
-
-######## Temperature as fector:
-data$TEMP<-as.factor(data$TEMP)
-######## MERG the OTU abundance data by 4
-S1<-seq(1,121920,4)
-S2<-seq(4,121920,4)
-O1<-matrix(0,length(S1),133)
-for (i in 1:length(S1)) {
-  O1[i,]<-colSums(otu[S1[i]:S2[i],])}
-
-########now convert to data frame and rename the columns
-OTUabund<-data.frame(O1)
-class(OTUabund)
-colnames(OTUabund)=colnames(otu)
-name<- row.names(data)
-row.names(OTUabund)<- name[1:30480]
-summary(OTUabund)
-########the abundance data is now saved under object name: OTUabund
-
-######## Merging METADATA
-S1<-seq(1,121920,4)
-S2<-seq(4,121920,4)
-D<-matrix(0,length(S1),7)
-for (i in 1:length(S1)) {
-  D[i,1]<-noquote(paste(data[S2[i],1]))
-  D[i,2]<-noquote(paste(data[S2[i],2]))
-  D[i,3]<-noquote(paste(data[S2[i],3]))
-  D[i,4]<-noquote(paste(data[S2[i],4]))
-  D[i,5]<-noquote(paste(data[S2[i],5]))
-  D[i,6]<-noquote(paste(data[S2[i],6]))
-  D[i,7]<-noquote(paste(data[S2[i],7]))
-}
-MetaData<-data.frame(D)
-class(MetaData)
-colnames(MetaData)=colnames(data)
-row.names(MetaData)<- name[1:30480]
-summary(MetaData)
+# data <- read.csv("MSHM.csv",header = T, row.names = 1)
+# otu <- read.csv(file="OTU.csv",header = T, row.names = 1)
+# str(data)
+# str(otu)
+# summary(otu)
+# summary(data)
+# colSums(otu)
+# 
+# ######## Temperature as fector:
+# data$TEMP<-as.factor(data$TEMP)
+# ######## MERG the OTU abundance data by 4
+# S1<-seq(1,121920,4)
+# S2<-seq(4,121920,4)
+# O1<-matrix(0,length(S1),133)
+# for (i in 1:length(S1)) {
+#   O1[i,]<-colSums(otu[S1[i]:S2[i],])}
+# 
+# ########now convert to data frame and rename the columns
+# OTUabund<-data.frame(O1)
+# class(OTUabund)
+# colnames(OTUabund)=colnames(otu)
+# name<- row.names(data)
+# row.names(OTUabund)<- name[1:30480]
+# summary(OTUabund)
+# ########the abundance data is now saved under object name: OTUabund
+# 
+# ######## Merging METADATA
+# S1<-seq(1,121920,4)
+# S2<-seq(4,121920,4)
+# D<-matrix(0,length(S1),7)
+# for (i in 1:length(S1)) {
+#   D[i,1]<-noquote(paste(data[S2[i],1]))
+#   D[i,2]<-noquote(paste(data[S2[i],2]))
+#   D[i,3]<-noquote(paste(data[S2[i],3]))
+#   D[i,4]<-noquote(paste(data[S2[i],4]))
+#   D[i,5]<-noquote(paste(data[S2[i],5]))
+#   D[i,6]<-noquote(paste(data[S2[i],6]))
+#   D[i,7]<-noquote(paste(data[S2[i],7]))
+# }
+# MetaData<-data.frame(D)
+# class(MetaData)
+# colnames(MetaData)=colnames(data)
+# row.names(MetaData)<- name[1:30480]
+# summary(MetaData)
 ######## the merged metadata is now saved under object named: MetaData
 
 ######## the merged metadata is now saved under object named: MetaData
@@ -77,30 +77,30 @@ write.csv(OTUabund, file="OTUabundMerg.csv")
 ##### IR histograms for each variable/factor
 ##############################################
 
-hist(MetaData $ IR) 
-hist(log(MetaData $ IR))
-hist(log(MetaData $ IR), prob=TRUE)
-hist(log(MetaData $ IR), prob=TRUE, breaks=20)
-
-boxplot(IR ~ SITE, data = MetaData)
-boxplot(IR ~ SOIL, data = MetaData)
-boxplot(IR ~ TIME, data = MetaData)
-boxplot(IR ~ HOST, data = MetaData)
-boxplot(IR ~ TISSUE, data = MetaData)
-boxplot(IR ~ TEMP, data = MetaData)
-boxplot(IR ~ MEDIA, data = MetaData)
-
-
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$SOIL, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$SITE, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$MEDIA, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TEMP, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TIME, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TISSUE, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$HOST, OTUabund, sum)
-
-
-aggregate(. ~ MetaData$SOIL, OTUabund, sum)
+# hist(MetaData $ IR) 
+# hist(log(MetaData $ IR))
+# hist(log(MetaData $ IR), prob=TRUE)
+# hist(log(MetaData $ IR), prob=TRUE, breaks=20)
+# 
+# boxplot(IR ~ SITE, data = MetaData)
+# boxplot(IR ~ SOIL, data = MetaData)
+# boxplot(IR ~ TIME, data = MetaData)
+# boxplot(IR ~ HOST, data = MetaData)
+# boxplot(IR ~ TISSUE, data = MetaData)
+# boxplot(IR ~ TEMP, data = MetaData)
+# boxplot(IR ~ MEDIA, data = MetaData)
+# 
+# 
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$SOIL, OTUabund, sum)
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$SITE, OTUabund, sum)
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$MEDIA, OTUabund, sum)
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TEMP, OTUabund, sum)
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TIME, OTUabund, sum)
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TISSUE, OTUabund, sum)
+# aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$HOST, OTUabund, sum)
+# 
+# 
+# aggregate(. ~ MetaData$SOIL, OTUabund, sum)
 
 OTU.slic<- c(866,352,303,589,434,348,535,877,500,394,301, 4603)  #get the valus from OTU.colsum
 
@@ -176,16 +176,19 @@ hist(log(simpson))
 
 ####### Subsetting the data for Aridsoil
 
-Aridsoil = subset (MetaData, SOIL%in%c("Arid soil"))
-AridsoilOTU = subset (OTUabund, MetaData$SOIL %in% c("Arid soil"))
+# Aridsoil = subset (MetaData, MetaData$SOIL=="Arid soil")
+# write.csv(Aridsoil, "Aridsoildata.csv")
+ARIDdata<-read.csv("Aridsoildata.csv", header = T)
 
-rownames(AridsoilOTU)==rownames(Aridsoil)
-class(Aridsoil)
-class(AridsoilOTU)
-View(Aridsoil)
-View(AridsoilOTU)
-
-colSums(AridsoilOTU)
+# AridsoilOTU = subset (OTUabund, MetaData$SOIL=="Arid soil")
+# write.csv(AridsoilOTU,"AridOTU.csv")
+AridOTU<-read.csv("AridOTU.csv",header = T)
+# rownames(AridsoilOTU)==rownames(Aridsoil)
+# class(Aridsoil)
+# class(AridsoilOTU)
+# View(Aridsoil)
+# View(AridsoilOTU)
+# colSums(AridsoilOTU)
 
 AridsoilOTU$GME.ss9..Quambalaria.cyanescens<-NULL
 AridsoilOTU$PFE.sh7..Rosellinia.limonispora <-NULL
