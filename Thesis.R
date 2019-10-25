@@ -91,45 +91,17 @@ boxplot(IR ~ TEMP, data = MetaData)
 boxplot(IR ~ MEDIA, data = MetaData)
 
 
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$SOIL, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$SITE, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$MEDIA, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TEMP, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TIME, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$TISSUE, OTUabund, sum)
-aggregate(APE.se5.Staphylotrichum.coccosporum     ~ MetaData$HOST, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.     ~ MetaData$SOIL, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.      ~ MetaData$SITE, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.      ~ MetaData$MEDIA, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.      ~ MetaData$TEMP, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.      ~ MetaData$TIME, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.      ~ MetaData$TISSUE, OTUabund, sum)
+aggregate(HAE.wh26.Preussia.sp.      ~ MetaData$HOST, OTUabund, sum)
 
 
 aggregate(. ~ MetaData$SOIL, OTUabund, sum)
 
-OTU.slic<- c(866,352,303,589,434,348,535,877,500,394,301, 4603)  #get the valus from OTU.colsum
-
-OTU.lbls<- c(expression(italic("Rosellinia sp.")),expression(italic("Acrocalymma vagum")),
-             expression(italic("Dimorphosporicola tragani")),
-             expression(italic("Raffaelea montetyi")),expression(italic("Paracamarosporium hawaiiense")),
-             expression(italic("Fusariella sinensis")),expression(italic("Humicola fuscoatra")),
-             expression(italic("Neocamarosporium chichastianum")),
-             expression(italic("Camarosporomyces flavigenus")),
-             expression(italic("Preussia sp.")),expression(italic("Coniophora marmorata")),"Other")
-
-
-OTU.Percent<-round(OTU.slic/sum (OTU.slic)*100, digits=2)
-OTU.lbls <- paste(OTU.lbls, OTU.Percent)
-order.lbls<-paste(OTU.lbls,"%",sep="")
-pie(OTU.slic,labels =OTU.lbls, col = c("red","skyblue1","magenta",
-                                       "deeppink1","mediumblue","royalblue1","orchid1","cyan",
-                                       "yellow", "springgreen2", "pink","green" ) , main = "OTU", 
-    cex=1,border = NA,cex.main= 0.5, radius = 1)
-
-OTU.Percent<-round(OTU.slic/sum (OTU.slic)*100, digits=2)
-OTU.lbls<- c (expression (italic("Rosellinia")*' sp. (8.57%)' ), expression (italic("Acrocalymma vagum")*' (3.48%)'), expression(italic("Dimorphosporicola")*' sp. (3%)'),
-              expression(italic("Raffaelea montetyi")*' (5.83%)'), expression(italic("Paracamarosporium")*' sp. (4.3%)'), expression(italic("Fusariella")*' sp. (3.44%)'),
-              expression(italic("Humicola fuscoatra")*' (5.3%)'),expression(italic("Neocamarosporium chichastianum")*' (8.68%)'),expression(italic("Chaetosphaeronema")*' sp. (4.95%)'),
-              expression(italic("Preussia")*' sp. (3.9%)'),expression (italic("Coniophora")*' sp. (2.98%)'), "Other (45.57%)")
-
-pie (OTU.slic,labels =OTU.lbls, col = c("red","skyblue1","magenta",
-                                        "deeppink1","mediumblue","royalblue1","orchid1","cyan",
-                                        "yellow", "springgreen2", "pink","green" ) , main = "OTUs frequency", cex=0.8,border = NA,cex.main= 1.1, radius =0.85)
 
 
 ##############################################
@@ -172,6 +144,34 @@ hist(shannon)
 hist(simpson)
 hist(log(shannon))
 hist(log(simpson))
+
+####### Subsetting the data for Gypsumsoil
+Gypsumsoil = subset (MetaData, SOIL%in%c("Gypsum Soil"))
+GypsumsoilOTU = subset (OTUabund, MetaData$SOIL %in% c("Gypsum Soil"))
+
+OTUsINGypsumsoil<-colSums(GypsumsoilOTU)
+GypsumsoilOTU<-GypsumsoilOTU[, colSums(GypsumsoilOTU != 0) > 0]
+rownames(GypsumsoilOTU)==rownames(Gypsumsoil)
+colSums(GypsumsoilOTU)
+colnames(GypsumsoilOTU)
+
+View(Gypsumsoil)
+View(GypsumsoilOTU)
+
+levels(Gypsumsoil$SOIL)
+
+####### Subsetting the data for Salinesoil
+Salinesoil = subset (MetaData, SOIL%in%c("Saline Soil"))
+SalinesoilOTU = subset (OTUabund, MetaData$SOIL %in% c("Saline Soil"))
+
+OTUsINSalinesoil<-colSums(SalinesoilOTU)
+SalinesoilOTU<-SalinesoilOTU[, colSums(SalinesoilOTU != 0) > 0]
+rownames(SalinesoilOTU)==rownames(Salinesoil)
+colSums(SalinesoilOTU)
+colnames(SalinesoilOTU)
+
+View(Salinesoil)
+View(SalinesoilOTU)
 
 
 ####### Subsetting the data for Aridsoil
@@ -267,34 +267,23 @@ colSums(AridsoilOTU)
 #OTU list Article 1
 colnames(AridsoilOTU)
 
+View(AridsoilOTU)
+View(Aridsoil)
+
+levels(Aridsoil$SOIL)
+
+######## calculating Isolation Rate for each sample, We need this for diversity estimations
+isolationRateArid= apply(AridsoilOTU,1, sum)
+MetaDataArid = cbind(Aridsoil, IR = isolationRateArid)
+
 #######################################
 #IR model
 #######################################
 hist(Aridsoil$IR)
-IR.m<-glm(formula =IR~HOST+TIME+SITE,data = Aridsoil,
+IR.m<-glm(formula =IR~HOST+TIME+SITE+,data = Aridsoil,
           family=poisson(link = "log"))
 
 
-
-####### Subsetting the data for Gypsumsoil
-Gypsumsoil = subset (MetaData, SOIL%in%c("Gypsum Soil"))
-GypsumsoilOTU = subset (OTUabund, MetaData$SOIL %in% c("Gypsum Soil"))
-
-OTUsINGypsumsoil<-colSums(GypsumsoilOTU)
-GypsumsoilOTU<-GypsumsoilOTU[, colSums(GypsumsoilOTU != 0) > 0]
-rownames(GypsumsoilOTU)==rownames(Gypsumsoil)
-colSums(GypsumsoilOTU)
-colnames(GypsumsoilOTU)
-
-####### Subsetting the data for Salinesoil
-Salinesoil = subset (MetaData, SOIL%in%c("Saline Soil"))
-SalinesoilOTU = subset (OTUabund, MetaData$SOIL %in% c("Saline Soil"))
-
-OTUsINSalinesoil<-colSums(SalinesoilOTU)
-SalinesoilOTU<-SalinesoilOTU[, colSums(SalinesoilOTU != 0) > 0]
-rownames(SalinesoilOTU)==rownames(Salinesoil)
-colSums(SalinesoilOTU)
-colnames(SalinesoilOTU)
 
 
 
